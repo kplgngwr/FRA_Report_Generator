@@ -43,8 +43,7 @@ Create a `.env` file (optional) to override defaults.
 ## Local development
 
 ```bash
-python -m venv .venv
-.venv\Scripts\activate  # Windows
+conda activate myenv  # if using conda
 pip install -r requirements.txt
 uvicorn app.main:app --reload --port 8080
 ```
