@@ -1,0 +1,13 @@
+# Exclude local/dev files from Docker build context
+.venv
+venv
+__pycache__
+.pytest_cache
+.vscode
+.env
+.git
+.gitignore
+**/*.pyc
+**/__pycache__
+*.log
+**/.pytest_cache

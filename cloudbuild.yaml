@@ -1,0 +1,29 @@
+steps:
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - '-t'
+      - '${_IMAGE_URI}'
+      - '.'
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - push
+      - '${_IMAGE_URI}'
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk:slim
+    entrypoint: gcloud
+    args:
+      - run
+      - deploy
+      - '${_SERVICE_NAME}'
+      - '--image=${_IMAGE_URI}'
+      - '--region=${_REGION}'
+      - '--platform=managed'
+      - '--allow-unauthenticated'
+      - '--set-env-vars=USE_VERTEX=${_USE_VERTEX},GCP_PROJECT=${PROJECT_ID},GCP_LOCATION=${_REGION}'
+substitutions:
+  _REGION: us-central1
+  _SERVICE_NAME: dss-report-bot
+  _IMAGE_URI: us-central1-docker.pkg.dev/${PROJECT_ID}/report-bot/report-bot:latest
+  _USE_VERTEX: 'false'
+options:
+  logging: CLOUD_LOGGING_ONLY
