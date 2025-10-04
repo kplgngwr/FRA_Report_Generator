@@ -1,4 +1,4 @@
-name: Deploy to Cloud Run
+﻿name: Deploy to Cloud Run
 
 on:
   push:
@@ -6,10 +6,10 @@ on:
   workflow_dispatch:
 
 env:
-  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  PROJECT_ID: fra-atlas-473615
   REGION: us-central1
   SERVICE: dss-report-bot
-  IMAGE: gcr.io/${{ secrets.GCP_PROJECT_ID }}/report-bot:${{ github.sha }}
+  IMAGE: gcr.io/${{ env.PROJECT_ID }}/report-bot:${{ github.sha }}
   USE_VERTEX: 'false'
 
 jobs:
@@ -27,7 +27,8 @@ jobs:
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
-          credentials_json: ${{ secrets.GCP_SA_KEY }}
+          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+
 
       - name: Set up gcloud SDK
         uses: google-github-actions/setup-gcloud@v2
@@ -55,3 +56,4 @@ jobs:
             --platform managed \
             --allow-unauthenticated \
             --set-env-vars USE_VERTEX=${{ env.USE_VERTEX }},GCP_PROJECT=${{ env.PROJECT_ID }},GCP_LOCATION=${{ env.REGION }}
+
